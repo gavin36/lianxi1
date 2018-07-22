@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/static/css/boot_strap.css">
+
+</head>
+<body>
+
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">客户管理</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
+        <li><a href="#">Link</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">Action</a></li>
+            <li><a href="#">Another action</a></li>
+            <li><a href="#">Something else here</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">Separated link</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">One more separated link</a></li>
+          </ul>
+        </li>
+      </ul>
+      <form class="navbar-form navbar-left">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Search">
+        </div>
+        <button type="submit" class="btn btn-default">Submit</button>
+      </form>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#">Link</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">Action</a></li>
+            <li><a href="#">Another action</a></li>
+            <li><a href="#">Something else here</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">Separated link</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+<div class="container-fluid container" >
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <a href="#" class="btn btn-primary btn-sm">添加客户</a>
+            <a href="/customer/add/" class="btn btn-primary btn-sm">批量添加</a>
+            <table class="table table-hover table-condensed table-striped small">
+                <thead>
+                    <tr>
+                        <th style="display: none">ID</th>
+
+                        <th>id</th>
+                        <th>客户姓名</th>
+                        <th>年龄</th>
+                        <th>邮箱</th>
+                        <th>公司</th>
+                        <th></th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for cus in customer_list %}
+                        <tr>
+                            <td style="display: none">{{ cus.id }}</td>
+                            <td scope="row">{{ forloop.counter }}</td>
+                            <td>{{ cus.name }}</td>
+                            <td>{{ cus.age }}</td>
+                            <td>{{ cus.email }}</td>
+                            <td>{{ cus.company }}</td>
+                            <td>
+                                {% for newfoo in customer.authors.all %}
+                                    {% if forloop.last %}
+                                        {{ newfoo.name }}
+                                    {% else %}
+                                         {{ newfoo.name }} |
+
+                                    {% endif %}
+                                {% endfor %}
+
+                            </td>
+                            <td>
+
+                                <button class="del btn-sm ">删除</button>
+                                {#                              <a href="/book/delete/{{ book.id }}">删除</a>#}
+                                <a href="#" class="btn btn-sm btn-danger">编辑</a>
+
+                            </td>
+
+                        </tr>
+                    {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script src="/static/js/jquery.js"></script>
+<script>
+    $(".del").click(function () {
+        var $sb = $(this).parent().parent();
+        var delId = $sb.children().eq(0).text();
+        $.ajax({
+            url:"/book/delete/",
+            type:"get",
+            data:{
+                id:delId
+            },
+            success:function (data) {
+                console.log(data);
+                $sb.remove()
+            }
+        })
+
+    });
+</script>
+
+</body>
+</html>
